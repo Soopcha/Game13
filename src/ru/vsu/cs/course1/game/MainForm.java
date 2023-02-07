@@ -61,16 +61,22 @@ public class MainForm extends JFrame {
         this.pack();
 
         SwingUtils.setShowMessageDefaultErrorHandler();
+        //установили что в случае обработчика событий будет устанавливаться обработчик ошибок оконный
 
+        //установили знач по умолчанию значение jtable в ячейках(и не только)
         tableGameField.setRowHeight(DEFAULT_CELL_SIZE);
         JTableUtils.initJTableForArray(tableGameField, DEFAULT_CELL_SIZE, false, false, false, false);
         tableGameField.setIntercellSpacing(new Dimension(0, 0));
         tableGameField.setEnabled(false);
 
+        // к jtable привязывается рендерер те класс, который будет отвечать за отображение различных ячеек отдельных
+        // по сути этот метод нужен только для того, чтобы в оределённый момен времени вызывался метод paintCell
         tableGameField.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             final class DrawComponent extends Component {
                 private int row = 0, column = 0;
 
+                //@Override у метода — говорит о том, что родительский метод переопределён в наследнике.
+                // Компилятор при наличии такой аннотации проверяет, не нарушены ли правила переопределения.
                 @Override
                 public void paint(Graphics gr) {
                     Graphics2D g2d = (Graphics2D) gr;
@@ -231,7 +237,7 @@ public class MainForm extends JFrame {
         this.setMinimumSize(null);
     }
 
-    private void updateView() {
+    private void updateView() { //метод, вызывающий перерисовку таблицу
         tableGameField.repaint();
     }
 
@@ -246,6 +252,8 @@ public class MainForm extends JFrame {
     }
 
     private void paintCell(int row, int column, Graphics2D g2d, int cellWidth, int cellHeight) {
+        //метод отвечает за то, как будет отображаться ячейка
+
         int cellValue = game.getCell(row, column);
 
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

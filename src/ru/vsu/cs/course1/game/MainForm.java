@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.TimerTask;
 
 public class MainForm extends JFrame {
     private JPanel panelMain;
@@ -50,7 +51,7 @@ public class MainForm extends JFrame {
 
 
     public MainForm() {
-        this.setTitle("тетрис");
+        this.setTitle("Tетрис");
         ImageIcon img = new ImageIcon("1.png");
         this.setIconImage(img.getImage());
         this.setContentPane(panelMain);
@@ -211,13 +212,14 @@ public class MainForm extends JFrame {
         JMenu menuHelp = new JMenu("Справка");
         menuBarMain.add(menuHelp);
         menuHelp.add(createMenuItem("Правила", "ctrl+R", null, e -> {
-            SwingUtils.showInfoMessageBox("Здесь должно быть краткое описание правил ...", "Правила");
+            SwingUtils.showInfoMessageBox("Перемещайте фигуры на поле, пока они не образуют линии и не очистятся." +
+                    "Чем больше линий будет очищено, тем больше очков у вас будет.", "Правила");
         }));
         menuHelp.add(createMenuItem("О программе", "ctrl+A", null, e -> {
             SwingUtils.showInfoMessageBox(
-                    "Шаблон для создания игры" +
-                            "\n\nАвтор: Соломатин Д.И." +
-                            "\nE-mail: solomatin.cs.vsu.ru@gmail.com",
+                    "Тетрис" +
+                            "\n\nАвтор: Малыхина Е.Е." +
+                            "\nE-mail: lena.malykhina.04@mail.ru",
                     "О программе"
             );
         }));
@@ -285,8 +287,18 @@ public class MainForm extends JFrame {
         time = 0;
         timer.start();
         updateView();
-    }
 
+        boolean gameIsOn = true; // это я тут сама что-то пыталась
+        while (gameIsOn) {
+            game.gameIsOn();
+            timer.schedule(new TimerTask() {
+                public void run() {
+                    game.action(Game.Action.DOWN);
+                    updateView();
+                }
+            }, 0, 1000);
+        }
+    }
 
 
     {

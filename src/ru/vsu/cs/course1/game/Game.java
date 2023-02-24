@@ -45,7 +45,23 @@ public class Game {
         // создаем поле
         field = new int[rowCount][colCount];
         this.colorCount = colorCount;
-        testInit();
+
+        if (currentFigure == null) {
+            createTheCurrentFigure();
+        }
+
+        /*boolean gameIsOn = true;
+        while (gameIsOn) {
+            if (currentRow + currentFigure.length == field.length) {
+                for (int i = 0; i < currentFigure.length; i++) {
+                    for (int j = 0; j < currentFigure[0].length; j++) {
+                        field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                    }
+                }
+                createTheCurrentFigure();
+            }
+        }*/
+        //testInit();
     }
 
     private void testInit() {
@@ -55,6 +71,57 @@ public class Game {
         currentColumn = 3;  //column - столбцы   (не фигуры нашей а  располажения фигуры в массиве поля field )
 
 
+    }
+    public void gameIsOn() {
+        if (currentRow + currentFigure.length == field.length) {
+            for (int i = 0; i < currentFigure.length; i++) {
+                for (int j = 0; j < currentFigure[0].length; j++) {
+                    field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                }
+            }
+            createTheCurrentFigure();
+        }
+    }
+
+
+    private void createTheCurrentFigure() {
+        int rndFigure = rnd.nextInt(7); // вернёт значения от 0 до 6 (не включая)
+        int rndOverturn = rnd.nextInt(4); //
+
+        switch (rndFigure) {
+            case 0:
+                currentFigure = new int[][]{{0, 0, 0}, {1, 1, 1}, {0, 1, 0}};
+                break;
+            case 1:
+                currentFigure = new int[][]{{1, 1}, {1, 1}};
+                break;
+            case 2:
+                currentFigure = new int[][]{{0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}};
+                break;
+            case 3:
+                currentFigure = new int[][]{{0, 0, 0}, {0, 1, 1}, {1, 1, 0}};
+                break;
+            case 4:
+                currentFigure = new int[][]{{0, 0, 0}, {1, 1, 0}, {0, 1, 1}};
+                break;
+            case 5:
+                currentFigure = new int[][]{{0, 0, 0}, {1, 0, 0}, {1, 1, 1}};
+                break;
+            case 6:
+                currentFigure = new int[][]{{0, 0, 0}, {0, 0, 1}, {1, 1, 1}};
+                break;
+        }
+        currentFigure = turnOverAtTheBeginningOfTheGame(currentFigure, rndOverturn); //рандомное кол-во раз переворачивает фигуру
+
+        currentRow = 0;     //row - строки
+        currentColumn = 3;  //column - столбцы   (не фигуры нашей а  располажения фигуры в массиве поля field )
+    }
+
+    private int[][] turnOverAtTheBeginningOfTheGame(int arr[][], int numOfOverturn) {
+        for (int i = 0; i < numOfOverturn; i++) {
+            arr = turnOver(arr);
+        }
+        return arr;
     }
 
     public void leftMouseClick(int row, int col) {
@@ -114,7 +181,7 @@ public class Game {
 
         for (int i = 0; i < figure.length; i++) {
             for (int j = 0; j < figure[0].length; j++) {
-                newFigure[i][j] = figure[j][2 - i];
+                newFigure[i][j] = figure[figure.length - 1 - j][i];
             }
         }
         return newFigure;
@@ -124,7 +191,8 @@ public class Game {
         for (int i = 0; i < figure.length; i++) {
             for (int j = 0; j < figure[0].length; j++) {
 
-                if (row + i >= field.length || col + j >= field[0].length || row + i < 0 || col + j < 0) {  // проверка на то, в поле ли наша фигура вообще
+                if (row + i >= field.length || col + j >= field[0].length || row + i < 0 || col + j < 0) {
+                    // проверка на то, в поле ли наша фигура вообще
                     if (figure[i][j] > 0) {
                         return false;
                     }

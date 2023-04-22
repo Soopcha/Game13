@@ -165,6 +165,8 @@ public class MainForm extends JFrame {
                     updateView();
                 }
 
+                game.gameIsOn();
+
 
                 return false;
 
@@ -279,6 +281,10 @@ public class MainForm extends JFrame {
     }
 
     private void newGame() {
+        game.cleanGame();
+        timer.restart();
+        updateView();
+
         game.newGame(params.getRowCount(), params.getColCount(), params.getColorCount());
         JTableUtils.resizeJTable(tableGameField,
                 game.getRowCount(), game.getColCount(),
@@ -288,7 +294,7 @@ public class MainForm extends JFrame {
         timer.start();
         updateView();
 
-        boolean gameIsOn = true; // это я тут сама что-то пыталась
+        /*boolean gameIsOn = true; // это я тут сама что-то пыталась
         while (gameIsOn) {
             game.gameIsOn();
             timer.schedule(new TimerTask() {
@@ -298,6 +304,8 @@ public class MainForm extends JFrame {
                 }
             }, 0, 1000);
         }
+
+         */
     }
 
 

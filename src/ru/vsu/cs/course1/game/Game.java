@@ -26,13 +26,13 @@ public class Game {
      * двумерный массив для хранения игрового поля
      * (в данном случае цветов, 0 - пусто; создается / пересоздается при старте игры)
      */
-    private int[][] field = null;
+    private int[][] field = null; // массив - игровое поле
     /**
      * Максимальное кол-во цветов
      */
     private int colorCount = 0;
 
-    private int[][] currentFigure = null;
+    private int[][] currentFigure = null; // массив - игровая фигура
 
     private int currentRow = 0;
     private int currentColumn = 0;
@@ -49,6 +49,8 @@ public class Game {
         if (currentFigure == null) {
             createTheCurrentFigure();
         }
+
+        gameIsOn();
 
         /*boolean gameIsOn = true;
         while (gameIsOn) {
@@ -72,49 +74,162 @@ public class Game {
 
 
     }
-    public void gameIsOn() {
-        if (currentRow + currentFigure.length == field.length) {
+
+    public void gameIsOn() { //что делает наше игровое поле когда игра уже в процессе
+        /*if (currentRow + currentFigure.length == field.length) {
             for (int i = 0; i < currentFigure.length; i++) {
                 for (int j = 0; j < currentFigure[0].length; j++) {
                     field[currentRow + i][currentColumn + j] = currentFigure[i][j];
                 }
             }
+            currentFigure = null;// очищаем предыдущую текущую фигуру
             createTheCurrentFigure();
         }
+
+         */
+        if (!cross(currentFigure, currentRow + 1, currentColumn)){
+            for (int i = 0; i < currentFigure.length; i++) {
+                for (int j = 0; j < currentFigure[0].length; j++) {
+                    if (!(field[currentRow + i][currentColumn + j] == 1)) {
+                        field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                    }
+                }
+            }
+            currentFigure = null;// очищаем предыдущую текущую фигуру
+            createTheCurrentFigure();
+        }
+
+
+        // очищение целых строк
+        for (int i = 0; i < field.length; i++) {
+            int kol1 = 0;
+            for (int j = 0; j < field[0].length; j++) {
+                if (field[i][j] == 1){
+                    kol1++;
+                }
+            }
+            if (kol1 == field[0].length){
+                for (int j = 0; j < field[0].length; j++) {
+                     field[i][j] = 0;
+                }
+            }
+
+        }
+
     }
 
 
     private void createTheCurrentFigure() {
-        int rndFigure = rnd.nextInt(7); // вернёт значения от 0 до 6 (не включая)
-        int rndOverturn = rnd.nextInt(4); //
+        int rndFigure = rnd.nextInt(7); // вернёт значения от 0 до 6 (не включая)  (выбираем рандомно фигуру)
+        int rndOverturn = rnd.nextInt(4); // число от 0 до 3(выбираем как рандомно перевернуть фигуру)
 
         switch (rndFigure) {
             case 0:
                 currentFigure = new int[][]{{0, 0, 0}, {1, 1, 1}, {0, 1, 0}};
+                switch (rndOverturn) { // в зависимости от того, какая фигура и в каком положении нужно разные currentRow и  currentColumn задавать
+                    case 0:
+                        currentRow = -2;     //row - строки
+                        currentColumn = 3; //column - столбцы   (не фигуры нашей а  располажения фигуры в массиве поля field )
+                        break;
+                    default:
+                        currentRow = -1;
+                        currentColumn = 3;
+                }
                 break;
             case 1:
                 currentFigure = new int[][]{{1, 1}, {1, 1}};
+                currentRow = -1;
+                currentColumn = 3;
                 break;
             case 2:
                 currentFigure = new int[][]{{0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}};
+                switch (rndOverturn) {
+                    case 0:
+                        currentRow = -1;
+                        currentColumn = 3;
+                        break;
+                    case 1:
+                        currentRow = -2;
+                        currentColumn = 2;
+                        break;
+                    case 2:
+                        currentRow = -1;
+                        currentColumn = 2;
+                        break;
+                    case 3:
+                        currentRow = -3;
+                        currentColumn = 2;
+                        break;
+
+                }
                 break;
             case 3:
                 currentFigure = new int[][]{{0, 0, 0}, {0, 1, 1}, {1, 1, 0}};
+                switch (rndOverturn) {
+                    case 0:
+                        currentRow = -2;
+                        currentColumn = 3;
+                        break;
+                    case 3 :
+                        currentRow = -1;
+                        currentColumn = 2;
+                        break;
+                    default:
+                        currentRow = -1;
+                        currentColumn = 3;
+                }
                 break;
             case 4:
                 currentFigure = new int[][]{{0, 0, 0}, {1, 1, 0}, {0, 1, 1}};
+                switch (rndOverturn) {
+                    case 0:
+                        currentRow = -2;
+                        currentColumn = 3;
+                        break;
+                    case 3:
+                        currentRow = -1;
+                        currentColumn = 2;
+                        break;
+                    default:
+                        currentRow = -1;
+                        currentColumn = 3;
+
+                }
                 break;
             case 5:
                 currentFigure = new int[][]{{0, 0, 0}, {1, 0, 0}, {1, 1, 1}};
+                switch (rndOverturn) {
+                    case 0:
+                        currentRow = -2;
+                        currentColumn = 3;
+                        break;
+                    case 3:
+                        currentRow = -1;
+                        currentColumn = 2;
+                        break;
+                    default:
+                        currentRow = -1;
+                        currentColumn = 3;
+                }
                 break;
             case 6:
                 currentFigure = new int[][]{{0, 0, 0}, {0, 0, 1}, {1, 1, 1}};
+                switch (rndOverturn) {
+                    case 0:
+                        currentRow = -2;
+                        currentColumn = 3;
+                        break;
+                    case 3:
+                        currentRow = -1;
+                        currentColumn = 2;
+                        break;
+                    default:
+                        currentRow = -1;
+                        currentColumn = 3;
+                }
                 break;
         }
         currentFigure = turnOverAtTheBeginningOfTheGame(currentFigure, rndOverturn); //рандомное кол-во раз переворачивает фигуру
-
-        currentRow = 0;     //row - строки
-        currentColumn = 3;  //column - столбцы   (не фигуры нашей а  располажения фигуры в массиве поля field )
     }
 
     private int[][] turnOverAtTheBeginningOfTheGame(int arr[][], int numOfOverturn) {
@@ -187,7 +302,7 @@ public class Game {
         return newFigure;
     }
 
-    private boolean cross(int[][] figure, int row, int col) { // смотрим пересекается наша ли фигура с fild;
+    private boolean cross(int[][] figure, int row, int col) { // смотрим пересекается наша ли фигура с fild; true - если всё норм
         for (int i = 0; i < figure.length; i++) {
             for (int j = 0; j < figure[0].length; j++) {
 
@@ -238,6 +353,10 @@ public class Game {
             }
         }
 
+    }
+    public void cleanGame(){ // очистить игру
+        field = null;
+        currentFigure = null;
     }
 
 

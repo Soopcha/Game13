@@ -52,7 +52,7 @@ public class Game {
             createTheCurrentFigure();
         }
 
-       // gameIsOn();
+        // gameIsOn();
 
         /*boolean gameIsOn = true;
         while (gameIsOn) {
@@ -79,11 +79,13 @@ public class Game {
 
     public void gameIsOn() { //что делает наше игровое поле когда игра уже в процессе
 
-        if (!cross(currentFigure, currentRow + 1, currentColumn)){
+        if (!cross(currentFigure, currentRow + 1, currentColumn)) {
             for (int i = 0; i < currentFigure.length; i++) {
                 for (int j = 0; j < currentFigure[0].length; j++) {
                     if (!(field[currentRow + i][currentColumn + j] == 1)) {
-                        field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                        if ((field[0].length > (currentColumn + j)) && (field.length > (currentRow + i))) {
+                            field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                        }
                     }
                 }
             }
@@ -96,13 +98,13 @@ public class Game {
         for (int i = 0; i < field.length; i++) {
             int kol1 = 0;
             for (int j = 0; j < field[0].length; j++) {
-                if (field[i][j] == 1){
+                if (field[i][j] == 1) {
                     kol1++;
                 }
             }
-            if (kol1 == field[0].length){
+            if (kol1 == field[0].length) {
                 for (int j = 0; j < field[0].length; j++) {
-                     field[i][j] = 0;
+                    field[i][j] = 0;
                 }
                 gameScore += 100;
             }
@@ -111,7 +113,7 @@ public class Game {
 
     }
 
-    public int getGameScore (){ // метод возвращает счёт в игре
+    public int getGameScore() { // метод возвращает счёт в игре
         return gameScore;
     }
 
@@ -167,7 +169,7 @@ public class Game {
                         currentRow = -2;
                         currentColumn = 3;
                         break;
-                    case 3 :
+                    case 3:
                         currentRow = -1;
                         currentColumn = 2;
                         break;
@@ -351,7 +353,8 @@ public class Game {
         }
 
     }
-    public void cleanGame(){ // очистить игру
+
+    public void cleanGame() { // очистить игру
         field = null;
         currentFigure = null;
         gameScore = 0;

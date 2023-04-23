@@ -37,6 +37,8 @@ public class Game {
     private int currentRow = 0;
     private int currentColumn = 0;
 
+    private int gameScore = 0; // счёт игры
+
 
     public Game() {
     }
@@ -50,7 +52,7 @@ public class Game {
             createTheCurrentFigure();
         }
 
-        gameIsOn();
+       // gameIsOn();
 
         /*boolean gameIsOn = true;
         while (gameIsOn) {
@@ -76,17 +78,7 @@ public class Game {
     }
 
     public void gameIsOn() { //что делает наше игровое поле когда игра уже в процессе
-        /*if (currentRow + currentFigure.length == field.length) {
-            for (int i = 0; i < currentFigure.length; i++) {
-                for (int j = 0; j < currentFigure[0].length; j++) {
-                    field[currentRow + i][currentColumn + j] = currentFigure[i][j];
-                }
-            }
-            currentFigure = null;// очищаем предыдущую текущую фигуру
-            createTheCurrentFigure();
-        }
 
-         */
         if (!cross(currentFigure, currentRow + 1, currentColumn)){
             for (int i = 0; i < currentFigure.length; i++) {
                 for (int j = 0; j < currentFigure[0].length; j++) {
@@ -112,10 +104,15 @@ public class Game {
                 for (int j = 0; j < field[0].length; j++) {
                      field[i][j] = 0;
                 }
+                gameScore += 100;
             }
 
         }
 
+    }
+
+    public int getGameScore (){ // метод возвращает счёт в игре
+        return gameScore;
     }
 
 
@@ -357,6 +354,7 @@ public class Game {
     public void cleanGame(){ // очистить игру
         field = null;
         currentFigure = null;
+        gameScore = 0;
     }
 
 

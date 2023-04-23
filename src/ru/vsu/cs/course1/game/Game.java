@@ -46,6 +46,12 @@ public class Game {
     public void newGame(int rowCount, int colCount, int colorCount) {
         // создаем поле
         field = new int[rowCount][colCount];
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < colCount; j++) {
+                field[i][j] = 0;
+            }
+        }
+
         this.colorCount = colorCount;
 
         if (currentFigure == null) {
@@ -302,8 +308,21 @@ public class Game {
     }
 
     private boolean cross(int[][] figure, int row, int col) { // смотрим пересекается наша ли фигура с fild; true - если всё норм
+        /* мб надо было:
+        int t1 = 0;
+        int t2 = 0;
+        if (col == -1) {
+            t1 = 1;
+        }
+        if (col == figure[0].length) {
+            t2 = -1;
+        }
+
         for (int i = 0; i < figure.length; i++) {
-            for (int j = 0; j < figure[0].length; j++) {
+            for (int j = 0 + t1; j < figure[i].length + t2; j++) {
+         */
+        for (int i = 0; i < figure.length; i++) {
+            for (int j = 0; j < figure[i].length; j++) {
 
                 if (row + i >= field.length || col + j >= field[0].length || row + i < 0 || col + j < 0) {
                     // проверка на то, в поле ли наша фигура вообще
@@ -311,7 +330,7 @@ public class Game {
                         return false;
                     }
                 } else {
-                    if (figure[i][j] > 0 && field[i + row][j + col] > 0) {
+                    if (figure[i][j] > 0 && field[i + row][j + col] > 0) {  //слйчай когда правой стороной текущей фигуры (дыркой) можно залезть за поле
                         return false;
                     }
                 }

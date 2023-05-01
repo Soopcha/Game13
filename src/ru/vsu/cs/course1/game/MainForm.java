@@ -170,6 +170,15 @@ public class MainForm extends JFrame {
                 }
 
                 game.gameIsOn();
+                if (game.getEndOfGame()) { // если игра проиграна то должно вывести окошко
+                    int choice = JOptionPane.showOptionDialog(null, "Игра проиграна. Начать заново?", "Game Over",
+                            JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, null, null, null);
+                    if (choice == JOptionPane.YES_OPTION) {
+                        game.cleanGame();
+                    } else {
+                        game.cleanGame();
+                    }
+                }
 
 
                 return false;

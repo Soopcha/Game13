@@ -39,6 +39,8 @@ public class Game {
 
     private int gameScore = 0; // счёт игры
 
+    private boolean endOfGame = false; // true - если конец игры
+
 
     public Game() {
     }
@@ -84,37 +86,49 @@ public class Game {
     }
 
     public void gameIsOn() { //что делает наше игровое поле когда игра уже в процессе
+        if (!endOfGame) {
 
-        if (!cross(currentFigure, currentRow + 1, currentColumn)) {
-            for (int i = 0; i < currentFigure.length; i++) {
-                for (int j = 0; j < currentFigure[0].length; j++) {
-                    if (!(field[currentRow + i][currentColumn + j] == 1)) {
-                        if ((field[0].length > (currentColumn + j)) && (field.length > (currentRow + i))) {
-                            field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+            if (!cross(currentFigure, currentRow + 1, currentColumn)) {
+                for (int i = 0; i < currentFigure.length; i++) {
+                    for (int j = 0; j < currentFigure[0].length; j++) {
+                        if (field[currentRow + i][currentColumn + j] == 0) {
+                            if (!(currentFigure[i][j] == 0)) {
+                            /*if ((field[0].length > (currentColumn + j + 1)) && (field.length > (currentRow + i + 1))) {
+                                field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                            }
+                             */
+                                field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                            }
                         }
                     }
                 }
-            }
-            currentFigure = null;// очищаем предыдущую текущую фигуру
-            createTheCurrentFigure();
-        }
+                currentFigure = null;// очищаем предыдущую текущую фигуру
 
-
-        // очищение целых строк
-        for (int i = 0; i < field.length; i++) {
-            int kol1 = 0;
-            for (int j = 0; j < field[0].length; j++) {
-                if (field[i][j] == 1) {
-                    kol1++;
+                for (int i = 0; i < field[0].length; i++) {
+                    if (field[0][i] == 1) {
+                        endOfGame = true;
+                    }
                 }
+                createTheCurrentFigure();
             }
-            if (kol1 == field[0].length) {
+
+
+            // очищение целых строк
+            for (int i = 0; i < field.length; i++) {
+                int kol1 = 0;
                 for (int j = 0; j < field[0].length; j++) {
-                    field[i][j] = 0;
+                    if (!(field[i][j] == 0)) {
+                        kol1++;
+                    }
                 }
-                gameScore += 100;
-            }
+                if (kol1 == field[0].length) {
+                    for (int j = 0; j < field[0].length; j++) {
+                        field[i][j] = 0;
+                    }
+                    gameScore += 100;
+                }
 
+            }
         }
 
     }
@@ -123,14 +137,19 @@ public class Game {
         return gameScore;
     }
 
+    public boolean getEndOfGame(){ // метод возвращает true, когда игра проиграна
+        return endOfGame;
+    }
+
 
     private void createTheCurrentFigure() {
         int rndFigure = rnd.nextInt(7); // вернёт значения от 0 до 6 (не включая)  (выбираем рандомно фигуру)
         int rndOverturn = rnd.nextInt(4); // число от 0 до 3(выбираем как рандомно перевернуть фигуру)
+        int rndColor = rnd.nextInt(8);
 
         switch (rndFigure) {
             case 0:
-                currentFigure = new int[][]{{0, 0, 0}, {1, 1, 1}, {0, 1, 0}};
+                currentFigure = new int[][]{{0, 0, 0}, {rndColor + 1, rndColor + 1, rndColor + 1}, {0, rndColor + 1, 0}};
                 switch (rndOverturn) { // в зависимости от того, какая фигура и в каком положении нужно разные currentRow и  currentColumn задавать
                     case 0:
                         currentRow = -2;     //row - строки
@@ -142,12 +161,12 @@ public class Game {
                 }
                 break;
             case 1:
-                currentFigure = new int[][]{{1, 1}, {1, 1}};
+                currentFigure = new int[][]{{rndColor + 1, rndColor + 1}, {rndColor + 1, rndColor + 1}};
                 currentRow = -1;
                 currentColumn = 3;
                 break;
             case 2:
-                currentFigure = new int[][]{{0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}, {0, 1, 0, 0}};
+                currentFigure = new int[][]{{0, rndColor + 1, 0, 0}, {0, rndColor + 1, 0, 0}, {0, rndColor + 1, 0, 0}, {0, rndColor + 1, 0, 0}};
                 switch (rndOverturn) {
                     case 0:
                         currentRow = -1;
@@ -169,7 +188,7 @@ public class Game {
                 }
                 break;
             case 3:
-                currentFigure = new int[][]{{0, 0, 0}, {0, 1, 1}, {1, 1, 0}};
+                currentFigure = new int[][]{{0, 0, 0}, {0, rndColor + 1, rndColor + 1}, {rndColor + 1, rndColor + 1, 0}};
                 switch (rndOverturn) {
                     case 0:
                         currentRow = -2;
@@ -185,7 +204,7 @@ public class Game {
                 }
                 break;
             case 4:
-                currentFigure = new int[][]{{0, 0, 0}, {1, 1, 0}, {0, 1, 1}};
+                currentFigure = new int[][]{{0, 0, 0}, {rndColor + 1, rndColor + 1, 0}, {0, rndColor + 1, rndColor + 1}};
                 switch (rndOverturn) {
                     case 0:
                         currentRow = -2;
@@ -202,7 +221,7 @@ public class Game {
                 }
                 break;
             case 5:
-                currentFigure = new int[][]{{0, 0, 0}, {1, 0, 0}, {1, 1, 1}};
+                currentFigure = new int[][]{{0, 0, 0}, {rndColor + 1, 0, 0}, {rndColor + 1, rndColor + 1, rndColor + 1}};
                 switch (rndOverturn) {
                     case 0:
                         currentRow = -2;
@@ -218,7 +237,7 @@ public class Game {
                 }
                 break;
             case 6:
-                currentFigure = new int[][]{{0, 0, 0}, {0, 0, 1}, {1, 1, 1}};
+                currentFigure = new int[][]{{0, 0, 0}, {0, 0, rndColor + 1}, {rndColor + 1, rndColor + 1, rndColor + 1}};
                 switch (rndOverturn) {
                     case 0:
                         currentRow = -2;
@@ -377,6 +396,7 @@ public class Game {
         field = null;
         currentFigure = null;
         gameScore = 0;
+        endOfGame = false;
     }
 
 

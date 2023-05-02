@@ -60,20 +60,6 @@ public class Game {
             createTheCurrentFigure();
         }
 
-        // gameIsOn();
-
-        /*boolean gameIsOn = true;
-        while (gameIsOn) {
-            if (currentRow + currentFigure.length == field.length) {
-                for (int i = 0; i < currentFigure.length; i++) {
-                    for (int j = 0; j < currentFigure[0].length; j++) {
-                        field[currentRow + i][currentColumn + j] = currentFigure[i][j];
-                    }
-                }
-                createTheCurrentFigure();
-            }
-        }*/
-        //testInit();
     }
 
     private void testInit() {
@@ -92,12 +78,14 @@ public class Game {
                 for (int i = 0; i < currentFigure.length; i++) {
                     for (int j = 0; j < currentFigure[0].length; j++) {
                         if (field[currentRow + i][currentColumn + j] == 0) {
-                            if (!(currentFigure[i][j] == 0)) {
+                            if ((field[0].length > (currentColumn + j)) && (field.length > (currentRow + i)) && (currentColumn + j >= 0) && (currentRow + i >= 0)) {
+                                if (!(currentFigure[i][j] == 0)) {
                             /*if ((field[0].length > (currentColumn + j + 1)) && (field.length > (currentRow + i + 1))) {
                                 field[currentRow + i][currentColumn + j] = currentFigure[i][j];
                             }
                              */
-                                field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                                    field[currentRow + i][currentColumn + j] = currentFigure[i][j];
+                                }
                             }
                         }
                     }
@@ -109,7 +97,10 @@ public class Game {
                         endOfGame = true;
                     }
                 }
-                createTheCurrentFigure();
+                if (!endOfGame) {
+                    createTheCurrentFigure();
+                }
+
             }
 
 
@@ -137,7 +128,7 @@ public class Game {
         return gameScore;
     }
 
-    public boolean getEndOfGame(){ // метод возвращает true, когда игра проиграна
+    public boolean getEndOfGame() { // метод возвращает true, когда игра проиграна
         return endOfGame;
     }
 
